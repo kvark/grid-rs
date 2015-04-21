@@ -6,6 +6,8 @@ use std::fmt::Debug;
 pub type Float = f32;
 /// A point in physical space.
 pub type Point = [Float; 3];
+/// Cubic area in physical space.
+pub type Area = [Point; 2];
 
 /// Generic grid type.
 pub trait Grid {
@@ -27,10 +29,14 @@ pub trait Grid {
     fn get_coordinate(&self, &Point) -> Self::Coordinate;
     /// Get the cell neighbor in a direction.
     fn get_neighbour(&self, Self::Coordinate, Self::Direction) -> Self::Coordinate;
+    /// Get an edge in a given direction.
+    fn get_edge(&self, Self::Coordinate, Self::Direction) -> [Point; 2];
     /// Fold over all neighbours.
     fn fold_neighbours<U, F: Fn(U, Self::Coordinate, Self::Direction) -> U>(&self, Self::Coordinate, U, F) -> U;
     /// Fold over all cells in a radius.
     fn fold_in_radius<U, F: Fn(U, Self::Coordinate) -> U>(&self, Self::Coordinate, Float, U, F) -> U;
+    /// Fold over a cubic area.
+    fn fold_in_area<U, F: Fn(U, Self::Coordinate) -> U>(&self, &Area, U, F) -> U;
 }
 
 /// Position on the grid.
