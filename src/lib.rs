@@ -6,9 +6,9 @@ pub type Point = [Float; 3];
 /// Generic grid type.
 pub trait Grid {
     /// Cell coordinate on the grid.
-    type Coordinate;
+    type Coordinate: Copy + Debug + PartialEq;
     /// Direciton on the grid.
-    type Direction;
+    type Direction: Copy + Debug + PartialEq;
     /// Get the center point of a cell.
     fn get_cell_center(&self, Self::Coordinate) -> Point;
     /// Get the closest coordinate of a point.
@@ -22,6 +22,7 @@ pub trait Grid {
 }
 
 /// Position on the grid.
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Position<G: Grid> {
     /// Coordinate.
     pub coord: G::Coordinate,
