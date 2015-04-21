@@ -1,3 +1,5 @@
+pub mod quad;
+
 pub type Float = f32;
 pub type Point = [Float; 3];
 
@@ -14,9 +16,9 @@ pub trait Grid {
     /// Get the cell neighbor in a direction.
     fn get_neighbour(&self, Self::Coordinate, Self::Direction) -> Self::Coordinate;
     /// Fold over all neighbours.
-    fn fold_neighbours<U, F: Fn(U, Self::Coordinate) -> U>(&self, Self::Coordinate, U) -> U;
+    fn fold_neighbours<U, F: Fn(U, Self::Coordinate, Self::Direction) -> U>(&self, Self::Coordinate, F, U) -> U;
     /// Fold over all cells in a radius.
-    fn fold_in_radius<U, F: Fn(U, Self::Coordinate) -> U>(&self, Self::Coordinate, Float, U) -> U;
+    fn fold_in_radius<U, F: Fn(U, Self::Coordinate) -> U>(&self, Self::Coordinate, Float, F, U) -> U;
 }
 
 /// Position on the grid.
