@@ -8,6 +8,7 @@ pub enum Direction {
     West,
 }
 
+#[derive(Clone, Debug)]
 pub struct Grid {
     cell_size: [::Float; 2],
 }
@@ -44,11 +45,22 @@ impl ::Grid for Grid {
         }
     }
     
-    fn fold_neighbours<U, F: Fn(U, Coordinate, Direction) -> U>(&self, _: Coordinate, _: F, u: U) -> U {
-        u //TODO
+    fn fold_neighbours<U, F: Fn(U, Coordinate, Direction) -> U>(&self, coord: Coordinate, u: U, fun: F) -> U {
+        [Direction::North, Direction::East, Direction::South, Direction::West]
+            .iter().fold(u, |u, &d| fun(u, self.get_neighbour(coord, d), d))
     }
     
-    fn fold_in_radius<U, F: Fn(U, Coordinate) -> U>(&self, _: Coordinate, _: ::Float, _: F, u: U) -> U {
-        u //TODO
+    fn fold_in_radius<U, F: Fn(U, Coordinate) -> U>(&self, coord: Coordinate, radius: ::Float, mut u: U, fun: F) -> U {
+        let ext_x = (radius / self.cell_size[0]) as i32;
+        let ext_y = (radius / self.cell_size[1]) as i32;
+        for x in coord[0] - ext_x .. coord[0] + ext_x + 1 {
+            for y in coord[1] - ext_y .. coord[1] + ext_y + 1 {
+                let dist = self.get_distance(coord, [x, y]);
+                if dist <= radius {
+                    u = fun(u, [x, y]);
+                }
+            }
+        }
+        u
     }
 }
