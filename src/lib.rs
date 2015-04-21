@@ -1,6 +1,10 @@
 pub mod quad;
 
+use std::fmt::Debug;
+
+/// Scalar type to be used in `Point`.
 pub type Float = f32;
+/// A point in physical space.
 pub type Point = [Float; 3];
 
 /// Generic grid type.
