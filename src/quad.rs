@@ -72,16 +72,6 @@ impl ::Grid for Grid {
         }
     }
     
-    fn get_edge(&self, c: Coordinate, d: Direction) -> [::Point; 2] {
-        let corners = self.get_corners(c);
-        match d {
-            Direction::North => [corners[0], corners[1]],
-            Direction::East  => [corners[1], corners[2]],
-            Direction::South => [corners[2], corners[3]],
-            Direction::West  => [corners[3], corners[0]],
-        }
-    }
-    
     fn fold_neighbours<U, F: Fn(U, Coordinate, Direction) -> U>(&self, coord: Coordinate, u: U, fun: F) -> U {
         [Direction::North, Direction::East, Direction::South, Direction::West]
             .iter().fold(u, |u, &d| fun(u, self.get_neighbour(coord, d), d))
@@ -110,5 +100,17 @@ impl ::Grid for Grid {
             }
         }
         u
+    }
+}
+
+impl ::Grid2 for Grid {
+    fn get_edge(&self, c: Coordinate, d: Direction) -> [::Point; 2] {
+        let corners = self.get_corners(c);
+        match d {
+            Direction::North => [corners[0], corners[1]],
+            Direction::East  => [corners[1], corners[2]],
+            Direction::South => [corners[2], corners[3]],
+            Direction::West  => [corners[3], corners[0]],
+        }
     }
 }
