@@ -8,6 +8,8 @@ pub type Float = f32;
 pub type Point = [Float; 3];
 /// Cubic area in physical space.
 pub type Area = [Point; 2];
+/// Normalized [-1, 1] angle.
+pub type Angle = f32;
 
 /// Generic grid type.
 pub trait Grid {
@@ -41,6 +43,7 @@ pub trait Grid {
 pub trait Grid2: Grid {
     /// Get an edge in a given direction.
     fn get_edge(&self, Self::Coordinate, Self::Direction) -> [Point; 2];
+    fn get_angle(&self, Self::Direction, Self::Direction) -> Angle;
 }
 
 /// Position on the grid.

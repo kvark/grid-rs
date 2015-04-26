@@ -113,4 +113,8 @@ impl ::Grid2 for Grid {
             Direction::West  => [corners[3], corners[0]],
         }
     }
+
+    fn get_angle(&self, a: Direction, b: Direction) -> ::Angle {
+        ((b as i8) - (a as i8)) as f32 / 2.0
+    }
 }
