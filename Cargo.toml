@@ -9,3 +9,5 @@ authors = [
 
 [lib]
 name = "grid"
+
+[dependencies]

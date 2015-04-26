@@ -1,6 +1,6 @@
 pub type Coordinate = [i32; 2];
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq)]
 pub enum Direction {
     North,
     East,

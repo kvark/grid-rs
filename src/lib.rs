@@ -1,6 +1,7 @@
 pub mod quad;
 
 use std::fmt::Debug;
+use std::hash::Hash;
 
 /// Scalar type to be used in `Point`.
 pub type Float = f32;
@@ -14,9 +15,9 @@ pub type Angle = f32;
 /// Generic grid type.
 pub trait Grid {
     /// Cell coordinate on the grid.
-    type Coordinate: Copy + Debug + PartialEq;
+    type Coordinate: Copy + Debug + Hash + PartialEq;
     /// Direciton on the grid.
-    type Direction: Copy + Debug + PartialEq;
+    type Direction : Copy + Debug + Hash + PartialEq;
     /// Get the center point of a cell.
     fn get_cell_center(&self, Self::Coordinate) -> Point;
     /// Get the distance between two cell centers.
@@ -32,11 +33,14 @@ pub trait Grid {
     /// Get the cell neighbor in a direction.
     fn get_neighbour(&self, Self::Coordinate, Self::Direction) -> Self::Coordinate;
     /// Fold over all neighbours.
-    fn fold_neighbours<U, F: Fn(U, Self::Coordinate, Self::Direction) -> U>(&self, Self::Coordinate, U, F) -> U;
+    fn fold_neighbours<U, F>(&self, Self::Coordinate, U, F) -> U where
+        F: Fn(U, Self::Coordinate, Self::Direction) -> U;
     /// Fold over all cells in a radius.
-    fn fold_in_radius<U, F: Fn(U, Self::Coordinate) -> U>(&self, Self::Coordinate, Float, U, F) -> U;
+    fn fold_in_radius<U, F>(&self, Self::Coordinate, Float, U, F) -> U where
+        F: Fn(U, Self::Coordinate) -> U;
     /// Fold over a cubic area.
-    fn fold_in_area<U, F: Fn(U, Self::Coordinate) -> U>(&self, &Area, U, F) -> U;
+    fn fold_in_area<U, F>(&self, &Area, U, F) -> U where
+        F: Fn(U, Self::Coordinate) -> U;
 }
 
 /// Generiic 2D grid.
