@@ -59,8 +59,8 @@ impl ::Grid for Grid {
     }
     
     fn get_coordinate(&self, p: &::Point) -> Coordinate {
-        [(p[0] / self.cell_size[0]) as i32,
-         (p[1] / self.cell_size[1]) as i32]
+        [(p[0] / self.cell_size[0]).floor() as i32,
+         (p[1] / self.cell_size[1]).floor() as i32]
     }
     
     fn get_neighbour(&self, c: Coordinate, d: Direction) -> Coordinate {
